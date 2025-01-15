@@ -12,7 +12,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --watch dev -e js dev/vpi.js"
+    "start": "nodemon --watch dev -e js dev/verinetworkNode.js"
   },
   "keywords": [],
   "author": "",

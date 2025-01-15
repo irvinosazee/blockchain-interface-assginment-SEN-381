@@ -1,9 +1,12 @@
 // Security and Hashing of data
 // invoke the specific sha -bit size (256)
 const sha256 = require("sha256");
+const currentUrl = process.argv[3];
 
 class Blockchain {
     constructor() {
+		this.currentNodeUrl = currentUrl;
+		this.networkNodes = [];
         this.chain = [];
         this.pendingTransactions = [];
         // this.newTransactions = [];

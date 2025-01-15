@@ -13,15 +13,21 @@
             max-width: 600px;
             margin: auto;
         }
-        input, button {
+        button {
             padding: 10px;
             margin: 5px 0;
-            width: 100%;
+            width: 101%
+        }
+        input {
+            padding: 10px;
+            margin: 5px 0;
+            width: 97%;
         }
         textarea {
-            width: 100%;
-            height: 150px;
-            margin: 10px 0;
+            padding: 10px;
+            margin: 5px 0;
+            width: 97%;
+            height: 80px;
         }
         button {
             cursor: pointer;
@@ -46,17 +52,25 @@
         <h3>View Blockchain</h3>
         <button id="view-blockchain">View Blockchain</button>
         <textarea id="blockchain-data" readonly placeholder="Blockchain data will appear here..."></textarea>
+
+        <h3>Register Bulk Nodes</h3>
+        <textarea id="bulk-node-data" placeholder="[{ 'amount': 30, 'sender': 'Sender1', 'recipient': 'Recipient1' }, { 'amount': 50, 'sender': 'Sender2', 'recipient': 'Recipient2' }]" rows="6"></textarea>
+        <button id="register-bulk-nodes">Register Bulk Nodes</button>
+        <textarea id="bulk-node-response" readonly placeholder="Bulk registration response will appear here..."></textarea>
+    
     </div>
 
     <script>
         const apiBaseUrl = "http://localhost:3000";
 
+        // Mine a new block
         document.getElementById('mine-block').addEventListener('click', async () => {
             const response = await fetch(`${apiBaseUrl}/mine`);
             const data = await response.json();
             document.getElementById('mined-block').value = JSON.stringify(data, null, 2);
         });
 
+        // Create a new transaction
         document.getElementById('create-transaction').addEventListener('click', async () => {
             const amount = document.getElementById('amount').value;
             const sender = document.getElementById('sender').value;
@@ -71,11 +85,41 @@
             document.getElementById('transaction-response').value = data.note;
         });
 
+        // Register bulk nodes
+        document.getElementById('register-bulk-nodes').addEventListener('click', async () => {
+            const bulkData = JSON.parse(document.getElementById('bulk-node-data').value);
+
+            const response = await fetch(`${apiBaseUrl}/register-node-bulk`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ allNetworkNodes: bulkData })
+            });
+
+            const data = await response.json();
+            document.getElementById('bulk-node-response').value = data.note;
+        });
+
+        // View the blockchain
         document.getElementById('view-blockchain').addEventListener('click', async () => {
             const response = await fetch(`${apiBaseUrl}/blockchain`);
             const data = await response.json();
             document.getElementById('blockchain-data').value = JSON.stringify(data, null, 2);
         });
+
+        // Register and broadcast a new node
+        document.getElementById('register-and-broadcast').addEventListener('click', async () => {
+            const newNodeUrl = document.getElementById('new-node-url').value;
+
+            const response = await fetch(`${apiBaseUrl}/register-and-broadcast-node`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ NewNodeUrl: newNodeUrl })
+            });
+
+            const data = await response.json();
+            document.getElementById('broadcast-response').value = data.note;
+        });
+
     </script>
 </body>
 </html>
