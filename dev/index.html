@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin: 10px 0;
+        }
+        button {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Blockchain Interface</h1>
+        
+        <h3>Mine a New Block</h3>
+        <button id="mine-block">Mine Block</button>
+        <textarea id="mined-block" readonly placeholder="Mined block details will appear here..."></textarea>
+        
+        <h3>Create a Transaction</h3>
+        <input type="number" id="amount" placeholder="Amount" required />
+        <input type="text" id="sender" placeholder="Sender" required />
+        <input type="text" id="recipient" placeholder="Recipient" required />
+        <button id="create-transaction">Create Transaction</button>
+        <textarea id="transaction-response" readonly placeholder="Transaction response will appear here..."></textarea>
+
+        <h3>View Blockchain</h3>
+        <button id="view-blockchain">View Blockchain</button>
+        <textarea id="blockchain-data" readonly placeholder="Blockchain data will appear here..."></textarea>
+    </div>
+
+    <script>
+        const apiBaseUrl = "http://localhost:3000";
+
+        document.getElementById('mine-block').addEventListener('click', async () => {
+            const response = await fetch(`${apiBaseUrl}/mine`);
+            const data = await response.json();
+            document.getElementById('mined-block').value = JSON.stringify(data, null, 2);
+        });
+
+        document.getElementById('create-transaction').addEventListener('click', async () => {
+            const amount = document.getElementById('amount').value;
+            const sender = document.getElementById('sender').value;
+            const recipient = document.getElementById('recipient').value;
+
+            const response = await fetch(`${apiBaseUrl}/transaction`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ amount, sender, recipient })
+            });
+            const data = await response.json();
+            document.getElementById('transaction-response').value = data.note;
+        });
+
+        document.getElementById('view-blockchain').addEventListener('click', async () => {
+            const response = await fetch(`${apiBaseUrl}/blockchain`);
+            const data = await response.json();
+            document.getElementById('blockchain-data').value = JSON.stringify(data, null, 2);
+        });
+    </script>
+</body>
+</html>

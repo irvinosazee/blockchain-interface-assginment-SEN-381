@@ -1,0 +1,15 @@
+To Run this Blockchain Project run the following steps
+
+1. Ensure you have Node.js installed on your machine.
+    You can download it from https://nodejs.org/.
+2. Open a terminal and navigate to the project directory:
+
+3. Install the project dependencies by running:
+    ```
+    npm install
+    ```
+4. Start the Backend Sever by running:
+    ```
+    npm start
+    ```
+5. View the index.html file using live Sever and proceed to interact with the blockchain
